@@ -6,19 +6,24 @@ Docker stack for a security-awareness platform:
 |---|-----------|------|----------|
 | 1 | **GoPhish** | Simulated phishing campaigns + result tracking | SQLite (volume) |
 | 2 | **Frappe LMS** | Training platform (modules/plugins, courses) | MariaDB + Redis |
-| 3 | **Backstage** | Admin platform | In-memory SQLite (Roadie demo image) |
+| 3 | **Backstage** | Admin platform / "the link" | SQLite (volume) |
+| — | **Mailpit** | Local mail catcher for testing (no real delivery) | in-memory |
 
 
-> Backstage currently uses the [Roadie](https://roadie.io/backstage/docker-image)
-> demo image (placeholder, not customizable). The real GoPhish ↔ Frappe
-> integration code will later require a custom-built Backstage app.
+> Backstage is our **own** app, built from source in [`./backstage/`](./backstage)
+> (scaffold it once with `./scaffold-backstage.sh`). This is where the real
+> GoPhish ↔ Frappe integration code will live. See [Backstage](#backstage).
 
 ## Getting started
 
 ```bash
 cp .env.example .env          # then edit the secrets (a dev .env is already provided)
+./scaffold-backstage.sh       # once: generate the Backstage app in ./backstage/
 docker compose up -d          # GoPhish + Frappe + Backstage
 ```
+
+> The `backstage` service builds from `./backstage/`, so it must be scaffolded
+> first (the step above). See [Backstage](#backstage) for details.
 
 Create the Frappe site **once** (manual step):
 
@@ -33,6 +38,7 @@ Access:
 - GoPhish phish  → http://localhost:8080
 - Frappe LMS     → http://localhost:8000  (host `lms.localhost`)
 - Backstage      → http://localhost:7007
+- Mailpit inbox  → http://localhost:8025  (captured test emails)
 
 
 ## Magic login links (`vidi_integration` app)
@@ -82,6 +88,33 @@ curl -X POST http://localhost:8000/api/method/vidi_integration.api.create_magic_
 Open `magic_url` in a private window → you land **logged in** on the course.
 
 
+## Local email testing (Mailpit)
+
+GoPhish has **no built-in mail transport** — it relays through an SMTP server defined
+in a **Sending Profile**. For local testing the stack ships **Mailpit**, a mail catcher
+that accepts SMTP and shows every message in a web inbox but **delivers nothing
+externally** — no message can reach a real mailbox, whatever recipient you use.
+
+Mailpit runs automatically with `docker compose up -d`. Inbox UI → http://localhost:8025.
+
+Create the Sending Profile **once**, in the GoPhish admin UI
+(http://localhost:3333 → **Sending Profiles → New Profile**):
+
+| Field | Value |
+|-------|-------|
+| Name | `Local Mailpit` |
+| From | `security-training@vidi.local` (anything) |
+| Host | `mailpit:1025` |
+| Username / Password | *(leave blank)* |
+
+Leave "Ignore Certificate Errors" unchecked (Mailpit uses plain SMTP, no TLS). Click
+**Send Test Email**, then open http://localhost:8025 to confirm it arrived. Campaigns
+then send to Mailpit and nowhere else (use test recipients like `alice@vidi.local`).
+
+> Ports are configurable via `MAILPIT_UI_PORT` / `MAILPIT_SMTP_PORT` in `.env`.
+> GoPhish reaches Mailpit in-network at `mailpit:1025`.
+
+
 ## Create a user
 
 ```bash
@@ -121,8 +154,27 @@ described here:
 This is also where you add your own plugins/courses (add their repos to the
 `apps.json` in `build-lms-image.sh`).
 
-**Backstage** — [Roadie](https://roadie.io/backstage/docker-image) demo image
-(`roadiehq/community-backstage-image`), ready to use and started by default.
-Optional: set `BACKSTAGE_GITHUB_TOKEN` in `.env` (a PAT with scopes
-`repo,user,read:org,read:discussion`) to populate the GitHub catalog.
+<a name="backstage"></a>
+**Backstage** — our **own** app, scaffolded into `./backstage/` and built from
+source (no third-party demo image). The host needs no Node toolchain: scaffolding
+and building both run in Docker.
+
+```bash
+./scaffold-backstage.sh                 # once: generates ./backstage/ (owned, committed)
+docker compose up -d --build backstage  # build + run (first build is slow: full yarn + tsc)
+docker compose logs -f backstage        # wait for the backend listening on :7007
+# -> http://localhost:7007  (sign in as "Guest")
+```
+
+- **Database:** persistent SQLite in the `backstage-data` volume (`/data`), one
+  file per plugin. State survives restarts.
+- **Auth:** guest sign-in, enabled via `dangerouslyAllowOutsideDevelopment` in
+  `backstage/app-config.production.yaml`. **POC only** — Backstage's guest
+  provider is not meant for real deployments; swap in a real auth provider before
+  going beyond local use.
+- **Customize:** edit `backstage/packages/app` (frontend) / `packages/backend`,
+  or add plugins under `backstage/plugins/`, then rebuild with
+  `docker compose up -d --build backstage`.
+- Build-time **and** runtime use `node:24-trixie-slim` (`backstage/Dockerfile`);
+  keep them in sync or the `better-sqlite3` native module fails at runtime.
 

@@ -1,3 +1,15 @@
 .env
 __pycache__/
 *.pyc
+
+# Backstage (owned app in ./backstage) — commit source, ignore build output.
+# Keep .yarn/releases and .yarn/plugins (required by Backstage) — do NOT ignore them.
+backstage/node_modules/
+backstage/packages/*/node_modules/
+backstage/plugins/*/node_modules/
+backstage/dist-types/
+backstage/packages/*/dist/
+backstage/plugins/*/dist/
+backstage/.yarn/cache/
+backstage/.yarn/install-state.gz
+backstage/*.local.yaml

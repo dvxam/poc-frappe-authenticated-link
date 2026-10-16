@@ -1,0 +1,13 @@
+# Tuned for the root multi-stage Dockerfile, which builds FROM SOURCE inside
+# Docker. Unlike the create-app default, we must KEEP packages/*/src and plugins/
+# in the build context, and only exclude installed/generated artifacts.
+.git
+node_modules
+packages/*/node_modules
+plugins/*/node_modules
+.yarn/cache
+.yarn/install-state.gz
+dist-types
+packages/*/dist
+plugins/*/dist
+*.local.yaml
