@@ -1,0 +1,11 @@
+[project]
+name = "vidi_integration"
+version = "0.0.1"
+description = "VIDI integration app — magic login links for Frappe LMS courses"
+requires-python = ">=3.10"
+readme = "README.md"
+dependencies = []
+
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"

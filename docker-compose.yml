@@ -1,0 +1,302 @@
+# =============================================================================
+# VIDI SI Platform — security & training stack
+#
+#   1. gophish   -> simulated phishing campaigns          (DB: SQLite)
+#   2. frappe    -> LMS / training platform               (DB: MariaDB + Redis)
+#   3. backstage -> "the link": integration / tracking    (DB: PostgreSQL)
+# Copy .env.example to .env and set the secrets before `docker compose up`.
+#
+# Startup:
+#   cp .env.example .env
+#   docker compose up -d
+# Then create the Frappe site (once):
+#   docker compose run --rm frappe-create-site
+# =============================================================================
+
+x-frappe-env: &frappe-env
+  DB_HOST: frappe-db
+  DB_PORT: "3306"
+  # A single shared Redis for both the cache AND the queue/socketio
+  REDIS_CACHE: redis:6379
+  REDIS_QUEUE: redis:6379
+  SOCKETIO_PORT: "9000"
+
+services:
+  # ---------------------------------------------------------------------------
+  # 1. GOPHISH — simulated phishing campaigns
+  # ---------------------------------------------------------------------------
+  gophish:
+    image: gophish/gophish:latest
+    container_name: vidi-gophish
+    restart: unless-stopped
+    environment:
+      # GoPhish reads its config from /opt/gophish/config.json (mounted below)
+      GOPHISH_INITIAL_ADMIN_PASSWORD: ${GOPHISH_ADMIN_PASSWORD}
+    ports:
+      - "${GOPHISH_ADMIN_PORT:-3333}:3333"   # admin interface
+      - "${GOPHISH_PHISH_PORT:-8080}:80"     # landing-page server (clicks)
+    volumes:
+      - ./config/gophish/config.json:/opt/gophish/config.json:ro
+      - gophish-data:/opt/gophish/data        # persistent SQLite file
+    depends_on:
+      gophish-init:
+        condition: service_completed_successfully
+    networks:
+      - vidi
+
+  # Prepares the SQLite volume (exists + writable by the gophish user)
+  gophish-init:
+    image: busybox
+    restart: "no"
+    command: ["sh", "-c", "mkdir -p /data && chmod 0777 /data"]
+    volumes:
+      - gophish-data:/data
+    networks:
+      - vidi
+
+  # ---------------------------------------------------------------------------
+  # 2. FRAPPE — LMS / training platform
+  #    (backend + frontend + websocket + scheduler + workers + redis + mariadb)
+  #
+  #    The image must contain the `lms` app. Build it via frappe_docker/apps.json:
+  #      https://github.com/frappe/frappe_docker
+  #    then set FRAPPE_IMAGE in .env.
+  # ---------------------------------------------------------------------------
+  frappe-db:
+    # 11.4+: the server offers TLS (auto in-memory cert) that the mariadb client
+    # in the Frappe image requires. 10.6 triggers the SSL error at new-site.
+    image: mariadb:11.4
+    container_name: vidi-frappe-db
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+    environment:
+      MYSQL_ROOT_PASSWORD: ${FRAPPE_DB_ROOT_PASSWORD}
+      # On a pre-existing datadir: run the upgrade + create the healthcheck user
+      MARIADB_AUTO_UPGRADE: "1"
+    volumes:
+      - frappe-db-data:/var/lib/mysql
+    healthcheck:
+      # Script shipped with the image: connects via socket, no password needed
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - vidi
+
+  # A single shared Redis (cache + queue + socketio) to keep things simple
+  redis:
+    image: redis:7-alpine
+    container_name: vidi-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - vidi
+
+  # One-shot: writes the common config (DB + Redis) into sites/common_site_config.json
+  frappe-configurator:
+    image: ${FRAPPE_IMAGE:-ghcr.io/frappe/lms:v2.65.0}
+    container_name: vidi-frappe-configurator
+    restart: "no"
+    entrypoint: ["bash", "-c"]
+    command:
+      - >
+        bench set-config -g db_host $$DB_HOST &&
+        bench set-config -gp db_port $$DB_PORT &&
+        bench set-config -g redis_cache "redis://$$REDIS_CACHE" &&
+        bench set-config -g redis_queue "redis://$$REDIS_QUEUE" &&
+        bench set-config -g redis_socketio "redis://$$REDIS_QUEUE" &&
+        bench set-config -gp socketio_port $$SOCKETIO_PORT
+    environment:
+      <<: *frappe-env
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      frappe-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - vidi
+
+  # MANUAL one-shot: creates the site and installs the lms app.
+  #   docker compose run --rm frappe-create-site
+  frappe-create-site:
+    image: ${FRAPPE_IMAGE:-ghcr.io/frappe/lms:v2.65.0}
+    profiles: ["setup"]
+    restart: "no"
+    entrypoint: ["bash", "-c"]
+    command:
+      - >
+        bench new-site ${FRAPPE_SITE_NAME:-lms.localhost}
+        --mariadb-user-host-login-scope=%
+        --db-root-username=root
+        --db-root-password=${FRAPPE_DB_ROOT_PASSWORD}
+        --admin-password=${FRAPPE_ADMIN_PASSWORD}
+        --install-app lms
+        --set-default
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      frappe-db:
+        condition: service_healthy
+    networks:
+      - vidi
+
+  # MANUAL one-shot: installs the custom `vidi_integration` app on the site.
+  # Requires the overlay image (./build-app-image.sh). Run once:
+  #   docker compose run --rm frappe-install-app
+  frappe-install-app:
+    image: ${FRAPPE_IMAGE:-ghcr.io/frappe/lms:v2.65.0}
+    profiles: ["setup"]
+    restart: "no"
+    entrypoint: ["bash", "-c"]
+    command:
+      - >
+        cd /home/frappe/frappe-bench &&
+        sed -i 's/paymentsvidi_integration/payments\nvidi_integration/' sites/apps.txt &&
+        { [ -s sites/apps.txt ] && [ -n "$(tail -c1 sites/apps.txt)" ] && echo >> sites/apps.txt || true; } &&
+        (grep -qxF vidi_integration sites/apps.txt || echo vidi_integration >> sites/apps.txt) &&
+        bench --site ${FRAPPE_SITE_NAME:-lms.localhost} install-app vidi_integration
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      frappe-db:
+        condition: service_healthy
+    networks:
+      - vidi
+
+  # MANUAL one-shot: creates/updates the (API-only) service user that lets
+  # Backstage call create_magic_link, and prints its API key/secret.
+  #   docker compose run --rm frappe-create-service-user
+  # (re-running rotates the secret; the secret is printed in the run's logs)
+  frappe-create-service-user:
+    image: ${FRAPPE_IMAGE:-ghcr.io/frappe/lms:v2.65.0}
+    profiles: ["setup"]
+    restart: "no"
+    entrypoint: ["bash", "-c"]
+    command:
+      - >
+        bench --site ${FRAPPE_SITE_NAME:-lms.localhost}
+        execute vidi_integration.setup.ensure_service_user
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      frappe-db:
+        condition: service_healthy
+    networks:
+      - vidi
+
+  frappe-backend:
+    image: ${FRAPPE_IMAGE:-ghcr.io/frappe/lms:v2.65.0}
+    container_name: vidi-frappe-backend
+    restart: unless-stopped
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      frappe-configurator:
+        condition: service_completed_successfully
+    networks:
+      - vidi
+
+  frappe-websocket:
+    image: ${FRAPPE_IMAGE:-ghcr.io/frappe/lms:v2.65.0}
+    container_name: vidi-frappe-websocket
+    restart: unless-stopped
+    command: ["node", "/home/frappe/frappe-bench/apps/frappe/socketio.js"]
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      frappe-configurator:
+        condition: service_completed_successfully
+    networks:
+      - vidi
+
+  frappe-scheduler:
+    image: ${FRAPPE_IMAGE:-ghcr.io/frappe/lms:v2.65.0}
+    container_name: vidi-frappe-scheduler
+    restart: unless-stopped
+    command: ["bench", "schedule"]
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      frappe-configurator:
+        condition: service_completed_successfully
+    networks:
+      - vidi
+
+  frappe-queue:
+    image: ${FRAPPE_IMAGE:-ghcr.io/frappe/lms:v2.65.0}
+    container_name: vidi-frappe-queue
+    restart: unless-stopped
+    command: ["bench", "worker", "--queue", "short,default,long"]
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      frappe-configurator:
+        condition: service_completed_successfully
+    networks:
+      - vidi
+
+  frappe-frontend:
+    image: ${FRAPPE_IMAGE:-ghcr.io/frappe/lms:v2.65.0}
+    container_name: vidi-frappe-frontend
+    restart: unless-stopped
+    command: ["nginx-entrypoint.sh"]
+    environment:
+      BACKEND: frappe-backend:8000
+      SOCKETIO: frappe-websocket:9000
+      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME:-lms.localhost}
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+      PROXY_READ_TIMEOUT: "120"
+      CLIENT_MAX_BODY_SIZE: 50m
+    ports:
+      - "${FRAPPE_PORT:-8000}:8080"
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      frappe-backend:
+        condition: service_started
+      frappe-websocket:
+        condition: service_started
+    networks:
+      - vidi
+
+  # ---------------------------------------------------------------------------
+  # 3. BACKSTAGE — "the link": integration code (click -> alert -> course -> tracking)
+  #
+  #    Placeholder "for now": Roadie demo image, ready to use.
+  #    https://roadie.io/backstage/docker-image
+  #    - listens on port 7000 (container)
+  #    - in-memory SQLite DB (no Postgres required for this demo image)
+  #    - a GITHUB_TOKEN (scopes repo,user,read:org,read:discussion) populates the catalog
+  #    NB: this demo image is not customizable. For the real integration code
+  #    (GoPhish <-> Frappe), we'll switch to a custom-built app.
+  # ---------------------------------------------------------------------------
+  backstage:
+    image: roadiehq/community-backstage-image:latest
+    container_name: vidi-backstage
+    restart: unless-stopped
+    environment:
+      GITHUB_TOKEN: ${BACKSTAGE_GITHUB_TOKEN:-FAKE}
+    ports:
+      - "${BACKSTAGE_PORT:-7007}:7000"
+    networks:
+      - vidi
+
+networks:
+  vidi:
+    name: vidi
+
+volumes:
+  gophish-data:
+  frappe-db-data:
+  frappe-sites:
+  redis-data:
