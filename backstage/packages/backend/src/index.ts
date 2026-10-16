@@ -13,6 +13,9 @@ const backend = createBackend();
 backend.add(import('@backstage/plugin-app-backend'));
 backend.add(import('@backstage/plugin-proxy-backend'));
 
+// Vidi: GoPhish -> LMS training email (POST /api/gophish/send-training-email)
+backend.add(import('@internal/plugin-gophish-backend'));
+
 // scaffolder plugin
 backend.add(import('@backstage/plugin-scaffolder-backend'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));

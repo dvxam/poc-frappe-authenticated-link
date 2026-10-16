@@ -22,79 +22,18 @@ app:
     # Visit data is stored via UserSettings storage if available, otherwise browser localStorage.
     # - api:home/visits: true
     # - app-root-element:home/visit-listener: true
-    - home-page-widget:home/toolkit:
-        config:
-          tools:
-            - url: https://backstage.io/docs
-              label: Docs
-              icon: docs
-            - url: https://github.com/backstage/backstage
-              label: GitHub
-              icon: github
-            - url: https://github.com/backstage/backstage/blob/master/CONTRIBUTING.md
-              label: Contributing
-              icon: docs
-            - url: https://backstage.io/plugins
-              label: Plugins Directory
-              icon: kind:component
-            - url: https://github.com/backstage/backstage/issues/new/choose
-              label: Submit New Issue
-              icon: github
-    - home-page-widget:home/world-clock:
-        config:
-          clockConfigs:
-            - label: NYC
-              timeZone: America/New_York
-            - label: UTC
-              timeZone: UTC
-            - label: STO
-              timeZone: Europe/Stockholm
-            - label: TYO
-              timeZone: Asia/Tokyo
     - page:home:
         config:
+          # Only the Vidi quick-links card. Every default widget (search bar,
+          # getting started, starred entities, random joke, toolkit, world
+          # clock, most/recently visited) is intentionally removed.
           defaultConfig:
-            - component: HomePageSearchBar
+            - component: VidiQuickLinks
               column: 0
               row: 0
               width: 12
-              height: 2
+              height: 8
               deletable: false
-            - component: GettingStarted
-              column: 0
-              row: 1
-              width: 4
-              height: 11
-            - component: HomePageStarredEntities
-              column: 4
-              row: 2
-              width: 4
-              height: 4
-            - component: HomePageRandomJoke
-              column: 8
-              row: 2
-              width: 4
-              height: 4
-            - component: HomePageToolkit
-              column: 4
-              row: 6
-              width: 4
-              height: 3
-            - component: HomePageWorldClock
-              column: 8
-              row: 6
-              width: 4
-              height: 3
-            - component: HomePageMostVisited
-              column: 4
-              row: 9
-              width: 4
-              height: 4
-            - component: HomePageRecentlyVisited
-              column: 8
-              row: 9
-              width: 4
-              height: 4
 
 organization:
   name: My Company
@@ -144,12 +83,45 @@ integrations:
     #   token: ${GHE_TOKEN}
 
 proxy:
-  ### Example for how to add a proxy endpoint for the frontend.
-  ### A typical reason to do this is to handle HTTPS and CORS for internal services.
-  # endpoints:
-  #   '/test':
-  #     target: 'https://example.com'
-  #     changeOrigin: true
+  endpoints:
+    # GoPhish admin API. The frontend calls `/api/proxy/gophish/api/...`; the
+    # proxy forwards to the GoPhish admin server and injects the API key
+    # server-side, so the key never reaches the browser and CORS is avoided.
+    # Set GOPHISH_API_KEY in .env (GoPhish UI -> Settings -> API key). GoPhish
+    # strips a leading "Bearer ", so this header form works.
+    '/gophish':
+      target: http://gophish:3333
+      changeOrigin: true
+      credentials: dangerously-allow-unauthenticated
+      headers:
+        Authorization: Bearer ${GOPHISH_API_KEY}
+      # GoPhish list/summary are read-only GETs for this plugin.
+      allowedMethods: ['GET']
+
+# Vidi GoPhish -> LMS training email (backend plugin @internal/plugin-gophish-backend).
+gophish:
+  training:
+    # LMS course the magic link points at.
+    course: test
+    # Exact path the magic link lands on after login (overrides the course's
+    # first lesson). URL-encode spaces (%20). Leave empty to use the first lesson.
+    redirectTo: /lms/courses/test/learn/0021%20Phishing
+    # Internal URL Backstage uses to reach Frappe (in the compose network).
+    frappeUrl: http://frappe-frontend:8080
+    # Public LMS origin the emailed link is rewritten to (reachable from the
+    # user's browser on the host). Keep in sync with FRAPPE_PORT.
+    lmsPublicUrl: http://localhost:8000
+    # Service-user API credentials are read from the FRAPPE_API_KEY /
+    # FRAPPE_API_SECRET env vars (passed to the container in docker-compose.yml),
+    # NOT from here — an empty value here makes Backstage config throw.
+    # Provision them with `docker compose run --rm frappe-create-service-user`.
+    # Email template (mounted read-only into the container, see docker-compose.yml).
+    templatePath: /email-templates/education-email.html
+    from: Security Awareness <security-awareness@vidi.local>
+    subject: Formation sécurité obligatoire — simulation de phishing
+    smtp:
+      host: mailpit
+      port: 1025
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs

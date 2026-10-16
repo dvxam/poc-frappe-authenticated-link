@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reconnaître et déjouer le phishing</title>
+  <link rel="stylesheet" href="shared/player.css">
+</head>
+<body data-mastery="80">
+  <header>
+    <div class="topbar"><span class="course"></span><span class="counter"></span></div>
+    <div class="progress"><div></div></div>
+  </header>
+
+  <main>
+    <!-- 1 ---------------------------------------------------------------- accueil -->
+    <section class="slide">
+      <div class="eyebrow">Module 1 · Sensibilisation à la cybersécurité</div>
+      <h1>Reconnaître et déjouer le phishing</h1>
+      <p class="lead">Le phishing (ou hameçonnage) est la porte d'entrée de la grande majorité des cyberattaques. Bonne nouvelle&nbsp;: quelques réflexes simples suffisent à le neutraliser.</p>
+      <div class="meta"><span>⏱ Environ 15 minutes</span><span>🎬 1 vidéo</span><span>🧩 2 exercices</span><span>✅ Quiz final : 80 % pour valider</span></div>
+      <h3>À la fin de ce module, vous saurez&nbsp;:</h3>
+      <ol class="objectives">
+        <li>Expliquer comment fonctionne une attaque par phishing et pourquoi elle fonctionne.</li>
+        <li>Repérer les signaux d'alerte dans un e-mail, un SMS ou un appel.</li>
+        <li>Lire une adresse web pour identifier le vrai site de destination.</li>
+        <li>Adopter les bons réflexes : <strong>Stop, Vérifier, Signaler</strong> — et savoir quoi faire si vous avez cliqué.</li>
+      </ol>
+    </section>
+
+    <!-- 2 ---------------------------------------------------------------- vidéo -->
+    <section class="slide" data-gate="video">
+      <div class="eyebrow">Vidéo · 2 minutes</div>
+      <h2>Le phishing en 2 minutes</h2>
+      <div class="video">
+        <video controls preload="metadata" playsinline poster="media/phishing-poster.jpg">
+          <source src="media/phishing.mp4" type="video/mp4">
+          <track kind="subtitles" srclang="fr" label="Français" src="media/phishing.vtt" default>
+          Votre navigateur ne peut pas lire cette vidéo.
+        </video>
+      </div>
+      <p class="lead" style="margin-top:16px">Activez le son ou les sous-titres. Le bouton « Suivant » se débloque à la fin de la vidéo.</p>
+    </section>
+
+    <!-- 3 ---------------------------------------------------------------- pourquoi ça marche -->
+    <section class="slide">
+      <div class="eyebrow">Comprendre</div>
+      <h2>Pourquoi ça marche&nbsp;?</h2>
+      <p>Le phishing ne pirate pas un ordinateur : il pirate <strong>nos réflexes</strong>. L'attaquant joue sur des émotions qui nous poussent à agir avant de réfléchir.</p>
+      <div class="grid">
+        <div class="card"><div class="icon">⏰</div><h3>L'urgence</h3><p>« Votre compte sera suspendu dans 1 heure. » Moins on a de temps, moins on vérifie.</p></div>
+        <div class="card"><div class="icon">🎩</div><h3>L'autorité</h3><p>Un message « de la direction », de la banque, des impôts ou du service informatique impressionne.</p></div>
+        <div class="card"><div class="icon">😨</div><h3>La peur</h3><p>Amende, colis bloqué, piratage de votre compte, poursuites… pour vous faire paniquer.</p></div>
+        <div class="card"><div class="icon">🎁</div><h3>L'appât du gain</h3><p>Remboursement, prime, cadeau, gain à un jeu-concours : trop beau pour être vrai.</p></div>
+        <div class="card"><div class="icon">👀</div><h3>La curiosité</h3><p>« Grille des salaires 2026 », « Photos de la soirée » : on a envie d'ouvrir.</p></div>
+        <div class="card"><div class="icon">🔁</div><h3>La routine</h3><p>Une fausse facture ou une fausse notification de partage ressemble à cent autres reçues.</p></div>
+      </div>
+      <div class="callout warn"><p><strong>À retenir&nbsp;:</strong> une émotion forte (urgence, peur, excitation) face à un message est en soi un signal d'alerte. C'est le moment de ralentir.</p></div>
+    </section>
+
+    <!-- 4 ---------------------------------------------------------------- signaux -->
+    <section class="slide">
+      <div class="eyebrow">Repérer</div>
+      <h2>Les 6 signaux d'alerte</h2>
+      <div class="grid">
+        <div class="card"><h3>1. L'expéditeur</h3><p>Le nom affiché peut être falsifié : regardez l'<strong>adresse complète</strong>. Méfiez-vous des domaines sosies : <code>rnonentreprise.fr</code>, <code>monentreprise-support.com</code>, <code>monentreprise.fr.info</code>.</p></div>
+        <div class="card"><h3>2. Le ton</h3><p>Formule impersonnelle (« Cher client »), pression, menace, fautes ou tournures inhabituelles — même si l'IA rend désormais les messages frauduleux très bien écrits.</p></div>
+        <div class="card"><h3>3. Les liens</h3><p>Survolez <strong>sans cliquer</strong> (ou appui long sur mobile) pour voir la vraie adresse. Un texte de lien peut afficher n'importe quoi.</p></div>
+        <div class="card"><h3>4. Les pièces jointes</h3><p>Fichiers inattendus, surtout <code>.zip</code>, <code>.html</code>, <code>.iso</code>, <code>.exe</code>, ou documents qui demandent d'« activer le contenu / les macros ».</p></div>
+        <div class="card"><h3>5. La demande</h3><p>Identifiants, code reçu par SMS, changement de RIB, virement urgent, achat de cartes cadeaux : aucune organisation sérieuse ne le demande ainsi.</p></div>
+        <div class="card"><h3>6. Le contexte</h3><p>Vous n'attendiez pas ce message ? Il arrive un vendredi soir ou pendant les congés de la personne ? Un détail ne colle pas&nbsp;? Fiez-vous à votre intuition.</p></div>
+      </div>
+    </section>
+
+    <!-- 5 ---------------------------------------------------------------- lire une url -->
+    <section class="slide">
+      <div class="eyebrow">Repérer</div>
+      <h2>Lire une adresse web en 5 secondes</h2>
+      <p>Le <strong>vrai domaine</strong> est la partie située <strong>juste avant le premier « / »</strong> qui suit <code>https://</code>. Lisez-le de droite à gauche&nbsp;: c'est toujours la fin qui compte.</p>
+      <table class="compare">
+        <tr><th>Adresse affichée</th><th>Vrai domaine</th><th>Verdict</th></tr>
+        <tr><td class="mono">https://www.<strong>monentreprise.fr</strong>/rh/conges</td><td class="mono">monentreprise.fr</td><td>✅ Légitime</td></tr>
+        <tr><td class="mono">https://monentreprise.fr.<strong>portail-rh.com</strong>/login</td><td class="mono">portail-rh.com</td><td>❌ Piège : « monentreprise.fr » n'est qu'un sous-domaine</td></tr>
+        <tr><td class="mono">https://<strong>monentreprise-fr.net</strong>/connexion</td><td class="mono">monentreprise-fr.net</td><td>❌ Domaine sosie</td></tr>
+        <tr><td class="mono">https://<strong>rnonentreprise.fr</strong>/</td><td class="mono">rnonentreprise.fr</td><td>❌ « rn » imite « m »</td></tr>
+      </table>
+      <div class="callout"><p><strong>Le cadenas ne prouve rien.</strong> Le « https » et le cadenas indiquent seulement que la connexion est chiffrée — pas que le site est honnête. La quasi-totalité des sites de phishing en ont un.</p></div>
+    </section>
+
+    <!-- 6 ---------------------------------------------------------------- exercice hotspots -->
+    <section class="slide" data-gate="hotspots">
+      <div class="eyebrow">Exercice 1</div>
+      <h2>Trouvez les 6 indices dans cet e-mail</h2>
+      <p>Cliquez sur chaque élément suspect. Indices trouvés : <span class="score-pill found-count"></span></p>
+      <div class="mail" data-hotspots>
+        <div class="bar"><i></i><i></i><i></i></div>
+        <div class="head">
+          <div><b>De :</b> Service Paie <span class="hotspot" data-label="&lt;strong&gt;Expéditeur&lt;/strong&gt; : le domaine « monentreprise-rh.net » n'est pas celui de l'entreprise (monentreprise.fr).">&lt;paie@monentreprise-rh.net&gt;</span></div>
+          <div><b>À :</b> vous@monentreprise.fr</div>
+          <div><b>Objet :</b> <span class="hotspot" data-label="&lt;strong&gt;Urgence dans l'objet&lt;/strong&gt; : « ACTION REQUISE » en majuscules pour vous presser.">ACTION REQUISE : régularisation de votre salaire</span></div>
+        </div>
+        <div class="body">
+          <p><span class="hotspot" data-label="&lt;strong&gt;Formule impersonnelle&lt;/strong&gt; : le vrai service paie connaît votre nom.">Bonjour cher collaborateur,</span></p>
+          <p>Suite à une erreur de calcul, un montant de 312,40 € vous est dû. <span class="hotspot" data-label="&lt;strong&gt;Délai et menace&lt;/strong&gt; : un délai très court et une perte annoncée pour vous empêcher de vérifier.">Vous devez confirmer vos coordonnées avant 17 h aujourd'hui, faute de quoi le montant sera définitivement perdu.</span></p>
+          <p><span class="hotspot fakebtn" title="https://monentreprise.portail-paie.co/login" data-label="&lt;strong&gt;Lien trompeur&lt;/strong&gt; : au survol, l'adresse réelle est monentreprise.portail-paie.co — un site externe.">Accéder au portail RH</span></p>
+          <p><span class="hotspot attach" data-label="&lt;strong&gt;Pièce jointe .html&lt;/strong&gt; : un fichier HTML joint ouvre souvent une fausse page de connexion hors de tout contrôle.">📎 Bulletin_rectificatif.html</span></p>
+          <p>Cordialement,<br>Le Service Paie</p>
+        </div>
+      </div>
+      <ul class="found-list"></ul>
+    </section>
+
+    <!-- 7 ---------------------------------------------------------------- exercice situations -->
+    <section class="slide" data-gate="scenarios">
+      <div class="eyebrow">Exercice 2</div>
+      <h2>Que faites-vous&nbsp;?</h2>
+      <p>Choisissez la meilleure réaction pour chaque situation.</p>
+
+      <div class="scenario">
+        <p class="situation">📧 Votre banque vous écrit : « Activité inhabituelle détectée, vérifiez votre compte ». Quel lien est le seul sûr&nbsp;?</p>
+        <div class="options">
+          <button class="btn mono" type="button" data-feedback="Le vrai domaine ici est « secure-login.com » : « banquehorizon.fr » n'est qu'un sous-domaine.">https://banquehorizon.fr.secure-login.com/client</button>
+          <button class="btn mono" type="button" data-feedback="Domaine sosie : « banquehorizon-fr.com » n'est pas « banquehorizon.fr ».">https://banquehorizon-fr.com/client</button>
+          <button class="btn" type="button" data-correct data-feedback="Le plus sûr est de ne pas utiliser le lien du message : ouvrez vous-même l'application ou tapez l'adresse que vous connaissez.">Aucun : j'ouvre moi-même l'application de ma banque</button>
+        </div>
+        <div class="feedback" aria-live="polite"></div>
+      </div>
+
+      <div class="scenario">
+        <p class="situation">📱 SMS : « Votre colis est bloqué, des frais de 1,99 € sont à régler : https://livraison-suivi.info/xk2 ». Vous attendez justement un colis.</p>
+        <div class="options">
+          <button class="btn" type="button" data-feedback="C'est exactement ce que veut l'attaquant : la petite somme sert à récupérer votre numéro de carte bancaire.">Je paie, ce n'est que 1,99 €</button>
+          <button class="btn" type="button" data-correct data-feedback="Les transporteurs ne demandent pas de frais par SMS. Vérifiez le suivi sur le site officiel du marchand, puis signalez le SMS au 33700.">Je ne clique pas, je vérifie le suivi depuis le site du marchand et je signale le SMS au 33700</button>
+          <button class="btn" type="button" data-feedback="Répondre confirme que votre numéro est actif et vous expose à d'autres arnaques.">Je réponds « STOP » pour ne plus être embêté</button>
+        </div>
+        <div class="feedback" aria-live="polite"></div>
+      </div>
+
+      <div class="scenario">
+        <p class="situation">☎️ Un « technicien du support informatique » vous appelle : votre poste est infecté, il vous demande le code que vous allez recevoir par SMS pour « sécuriser votre compte ».</p>
+        <div class="options">
+          <button class="btn" type="button" data-feedback="Ce code est la clé de votre compte : le communiquer revient à donner votre mot de passe.">Je lui donne le code, il a l'air de connaître notre organisation</button>
+          <button class="btn" type="button" data-correct data-feedback="Un code reçu par SMS ne se communique jamais à personne. Raccrochez et rappelez le support via le numéro officiel de l'intranet.">Je refuse, je raccroche et je rappelle le support via son numéro officiel</button>
+        </div>
+        <div class="feedback" aria-live="polite"></div>
+      </div>
+
+      <div class="scenario">
+        <p class="situation">💼 E-mail du directeur général, depuis son adresse habituelle : « Je suis en rendez-vous, j'ai besoin d'un virement urgent et confidentiel à un nouveau fournisseur. N'en parle à personne. »</p>
+        <div class="options">
+          <button class="btn" type="button" data-feedback="Urgence + secret + demande hors procédure : c'est la signature de la « fraude au président ». Une boîte mail peut aussi être piratée.">J'exécute rapidement, c'est la direction</button>
+          <button class="btn" type="button" data-correct data-feedback="Une demande de virement inhabituelle se vérifie toujours par un autre canal (téléphone au numéro connu) et suit la procédure de validation habituelle.">Je vérifie par téléphone auprès de lui ou de son assistant(e), et je respecte la procédure de validation</button>
+          <button class="btn" type="button" data-feedback="Répondre au même e-mail ne prouve rien : si la boîte est piratée ou usurpée, c'est l'attaquant qui vous répondra.">Je réponds à l'e-mail pour lui demander confirmation</button>
+        </div>
+        <div class="feedback" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- 8 ---------------------------------------------------------------- autres canaux -->
+    <section class="slide">
+      <div class="eyebrow">Au-delà de l'e-mail</div>
+      <h2>Le phishing prend plusieurs visages</h2>
+      <div class="grid">
+        <div class="card"><div class="icon">📱</div><h3>Smishing (SMS)</h3><p>Faux colis, fausse amende, faux remboursement de l'Assurance Maladie… Signalez-les gratuitement en transférant le SMS au <strong>33700</strong>.</p></div>
+        <div class="card"><div class="icon">☎️</div><h3>Vishing (téléphone)</h3><p>Faux conseiller bancaire, faux support technique. Le numéro affiché peut être usurpé et la voix imitée par l'IA.</p></div>
+        <div class="card"><div class="icon">🔳</div><h3>Quishing (QR code)</h3><p>Un QR code dans un e-mail, sur un parcmètre ou une affiche peut mener vers un faux site. Vérifiez l'adresse avant de saisir quoi que ce soit.</p></div>
+        <div class="card"><div class="icon">🎯</div><h3>Spear phishing</h3><p>Une attaque ciblée, préparée avec des informations trouvées sur vous (réseaux sociaux, site de l'entreprise). Très crédible.</p></div>
+        <div class="card"><div class="icon">💼</div><h3>Fraude au président</h3><p>Un faux dirigeant ou faux fournisseur demande un virement ou un changement de RIB, dans l'urgence et le secret.</p></div>
+        <div class="card"><div class="icon">💬</div><h3>Messageries &amp; réseaux</h3><p>Faux recruteurs, faux comptes de collègues sur WhatsApp, Teams ou LinkedIn. Mêmes ressorts, autres canaux.</p></div>
+      </div>
+    </section>
+
+    <!-- 9 ---------------------------------------------------------------- réflexes -->
+    <section class="slide">
+      <div class="eyebrow">Agir</div>
+      <h2>Les 3 bons réflexes</h2>
+      <div class="steps">
+        <div class="step red"><h3>1. STOP</h3><p>Je ne clique pas, je n'ouvre pas la pièce jointe, je ne réponds pas, je ne scanne pas le QR code.</p></div>
+        <div class="step amber"><h3>2. VÉRIFIER</h3><p>Je contacte l'expéditeur supposé <strong>par un autre canal</strong> : numéro connu, annuaire interne, application officielle. Jamais via les coordonnées du message.</p></div>
+        <div class="step green"><h3>3. SIGNALER</h3><p>J'utilise le bouton <strong>« Signaler »</strong> de ma messagerie ou je transfère le message au service sécurité, puis je le supprime.</p></div>
+      </div>
+      <div class="callout ok"><p><strong>Pourquoi signaler&nbsp;?</strong> Un seul signalement permet de bloquer le message pour tous vos collègues. Vous n'êtes probablement pas le seul destinataire.</p></div>
+      <div class="callout warn"><p><strong>À éviter&nbsp;:</strong> transférer le message suspect à vos collègues « pour les prévenir » — vous risquez de propager le piège.</p></div>
+    </section>
+
+    <!-- 10 --------------------------------------------------------------- j'ai cliqué -->
+    <section class="slide">
+      <div class="eyebrow">Réagir</div>
+      <h2>J'ai cliqué… que faire&nbsp;?</h2>
+      <p>Cela peut arriver à tout le monde. Ce qui compte, c'est la <strong>rapidité de réaction</strong>&nbsp;: chaque minute compte pour limiter les dégâts.</p>
+      <ol class="objectives">
+        <li><strong>Déconnectez le poste du réseau</strong> (câble, Wi-Fi) si vous avez ouvert une pièce jointe ou installé quelque chose. Ne l'éteignez pas&nbsp;: cela aide l'analyse.</li>
+        <li><strong>Prévenez immédiatement</strong> le support informatique ou le service sécurité. Décrivez ce que vous avez fait, sans rien cacher.</li>
+        <li><strong>Changez votre mot de passe</strong> depuis un autre appareil si vous l'avez saisi, ainsi que partout où vous utilisiez le même.</li>
+        <li><strong>Gardez le message</strong> : il sera utile à l'analyse. Ne le supprimez qu'une fois l'incident pris en charge.</li>
+      </ol>
+      <div class="callout ok"><p>Signaler une erreur n'est jamais une faute. Ce qui coûte cher, c'est le silence.</p></div>
+    </section>
+
+    <!-- 11 --------------------------------------------------------------- quiz -->
+    <section class="slide" data-gate="quiz">
+      <div class="eyebrow">Quiz final · 8 questions</div>
+      <h2>Testez vos réflexes</h2>
+      <p>Il faut au moins <strong>80 %</strong> de bonnes réponses pour valider le module. Vous pouvez recommencer autant de fois que nécessaire.</p>
+
+      <fieldset class="q" id="phish-q1" data-answer="b">
+        <legend>1. Quel est le ressort le plus utilisé par les messages de phishing&nbsp;?</legend>
+        <label class="choice"><input value="a"> Des messages toujours remplis de fautes d'orthographe</label>
+        <label class="choice"><input value="b"> Un sentiment d'urgence ou de peur qui pousse à agir sans réfléchir</label>
+        <label class="choice"><input value="c"> Des pièces jointes systématiquement très volumineuses</label>
+        <p class="explain">L'urgence (et la peur, l'autorité, l'appât du gain) court-circuite la vérification. Les fautes, elles, sont de plus en plus rares grâce aux outils d'IA.</p>
+      </fieldset>
+
+      <fieldset class="q" id="phish-q2" data-answer="c">
+        <legend>2. Vous survolez un lien et voyez <code>https://monentreprise.fr.connexion-securisee.io/login</code>. Quel est le vrai domaine&nbsp;?</legend>
+        <label class="choice"><input value="a"> monentreprise.fr</label>
+        <label class="choice"><input value="b"> login</label>
+        <label class="choice"><input value="c"> connexion-securisee.io</label>
+        <p class="explain">Le domaine est la partie juste avant le premier « / » : ici <code>connexion-securisee.io</code>. « monentreprise.fr » n'est qu'un sous-domaine choisi par l'attaquant.</p>
+      </fieldset>
+
+      <fieldset class="q" id="phish-q3" data-answer="a,b,c">
+        <legend>3. Parmi ces éléments, lesquels sont des signaux d'alerte&nbsp;?</legend>
+        <label class="choice"><input value="a"> Une menace de suspension de compte « sous 24 h »</label>
+        <label class="choice"><input value="b"> Une adresse d'expéditeur au domaine inconnu ou approchant</label>
+        <label class="choice"><input value="c"> Une pièce jointe <code>.html</code> ou <code>.zip</code> que vous n'attendiez pas</label>
+        <label class="choice"><input value="d"> Un message attendu d'un collègue, sur un projet en cours, sans demande particulière</label>
+        <p class="explain">Menace, domaine douteux et pièce jointe inattendue sont trois signaux classiques. Un échange attendu et cohérent avec le contexte n'en est pas un.</p>
+      </fieldset>
+
+      <fieldset class="q" id="phish-q4" data-answer="b">
+        <legend>4. Un fournisseur vous informe par e-mail de son changement de coordonnées bancaires (RIB). Que faites-vous&nbsp;?</legend>
+        <label class="choice"><input value="a"> Je mets à jour le RIB : l'e-mail vient bien de l'adresse habituelle du fournisseur</label>
+        <label class="choice"><input value="b"> J'appelle le fournisseur au numéro déjà connu (pas celui du message) avant toute modification</label>
+        <label class="choice"><input value="c"> Je réponds à l'e-mail pour demander une confirmation écrite</label>
+        <p class="explain">Une boîte mail peut être piratée ou usurpée : une réponse au même message ne prouve rien. Seule une vérification par un autre canal fait foi.</p>
+      </fieldset>
+
+      <fieldset class="q" id="phish-q5" data-answer="a">
+        <legend>5. Le cadenas et le « https » dans la barre d'adresse garantissent-ils qu'un site est légitime&nbsp;?</legend>
+        <label class="choice"><input value="a"> Non, ils indiquent seulement que la connexion est chiffrée</label>
+        <label class="choice"><input value="b"> Oui, un site frauduleux ne peut pas obtenir de cadenas</label>
+        <label class="choice"><input value="c"> Oui, s'il est vert</label>
+        <p class="explain">N'importe qui peut obtenir gratuitement un certificat. La quasi-totalité des sites de phishing affichent un cadenas.</p>
+      </fieldset>
+
+      <fieldset class="q" id="phish-q6" data-answer="b,c">
+        <legend>6. Vous avez saisi votre mot de passe sur une page qui vous semble maintenant suspecte. Que faites-vous&nbsp;?</legend>
+        <label class="choice"><input value="a"> J'attends de voir s'il se passe quelque chose d'anormal</label>
+        <label class="choice"><input value="b"> Je préviens immédiatement le support informatique / le service sécurité</label>
+        <label class="choice"><input value="c"> Je change ce mot de passe, et partout où je l'utilisais</label>
+        <label class="choice"><input value="d"> Je supprime l'e-mail pour effacer les traces</label>
+        <p class="explain">Il faut agir vite : prévenir et changer le mot de passe. Attendre laisse le temps à l'attaquant, et supprimer le message prive l'équipe sécurité d'éléments d'analyse.</p>
+      </fieldset>
+
+      <fieldset class="q" id="phish-q7" data-answer="c">
+        <legend>7. Qu'appelle-t-on le « smishing »&nbsp;?</legend>
+        <label class="choice"><input value="a"> Un phishing par appel téléphonique</label>
+        <label class="choice"><input value="b"> Un phishing via un QR code</label>
+        <label class="choice"><input value="c"> Un phishing par SMS</label>
+        <p class="explain">Smishing = SMS + phishing. Le phishing par téléphone s'appelle le vishing, et par QR code le quishing.</p>
+      </fieldset>
+
+      <fieldset class="q" id="phish-q8" data-answer="a">
+        <legend>8. Vous recevez un e-mail suspect. Quelle est la meilleure action&nbsp;?</legend>
+        <label class="choice"><input value="a"> Le signaler avec le bouton « Signaler » ou au service sécurité, puis le supprimer</label>
+        <label class="choice"><input value="b"> Le transférer à toute l'équipe pour les prévenir</label>
+        <label class="choice"><input value="c"> Cliquer sur le lien de désinscription en bas du message</label>
+        <p class="explain">Le signalement protège tout le monde. Transférer le message propage le piège, et le lien de « désinscription » peut lui-même être malveillant.</p>
+      </fieldset>
+
+      <p><button class="btn primary" type="button" id="quiz-submit">Valider mes réponses</button></p>
+    </section>
+
+    <!-- 12 --------------------------------------------------------------- résultats -->
+    <section class="slide" data-results>
+      <div class="result"></div>
+      <div class="callout"><p><strong>Mémo&nbsp;:</strong> en cas de doute → <strong>Stop</strong>, je ne clique pas · <strong>Vérifier</strong> par un autre canal · <strong>Signaler</strong> au service sécurité.</p></div>
+    </section>
+  </main>
+
+  <nav class="navbar">
+    <button class="btn" type="button" id="prev">← Précédent</button>
+    <span class="hint" aria-live="polite"></span>
+    <button class="btn primary" type="button" id="next">Suivant →</button>
+  </nav>
+
+  <script src="shared/player.js"></script>
+</body>
+</html>

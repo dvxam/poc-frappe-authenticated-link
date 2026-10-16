@@ -8,3 +8,6 @@ app_license = "mit"
 # Ensure the "Magic Link Manager" role exists after install/migrate.
 after_install = "vidi_integration.setup.after_install"
 after_migrate = "vidi_integration.setup.after_install"
+
+# Fix LMS SCORM chapters answering 403 (chapter name vs title lookup), see scorm_fix.py.
+before_request = ["vidi_integration.scorm_fix.apply"]

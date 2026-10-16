@@ -178,3 +178,58 @@ docker compose logs -f backstage        # wait for the backend listening on :700
 - Build-time **and** runtime use `node:24-trixie-slim` (`backstage/Dockerfile`);
   keep them in sync or the `better-sqlite3` native module fails at runtime.
 
+### GoPhish stats plugin
+
+`backstage/plugins/gophish` — a frontend plugin (new frontend system) that adds a
+**Phishing** item to the left menu. The page lists GoPhish campaigns; selecting
+one shows its stats (recipients, sent, opened, clicked, submitted data, reported,
+errors) **and the list of users who clicked** the link — email, name, status,
+click time, and IP (derived from the campaign's per-recipient results + timeline).
+
+- Calls go through the **Backstage proxy** (`proxy.endpoints./gophish` in
+  `app-config.yaml` → `http://gophish:3333`), which injects the API key
+  **server-side** — it never reaches the browser, and there's no CORS.
+- Set `GOPHISH_API_KEY` in `.env` first: log in to GoPhish, go to
+  **Settings → API key**, copy it. The `backstage` service passes it through.
+- After editing plugin code, the committed `yarn.lock` must cover any new
+  package, so re-run the in-place install (below) before rebuilding.
+
+```bash
+# 1. regenerate the lockfile in place (needed after adding/removing a package)
+docker run --rm -v "$PWD/backstage":/app -w /app node:24-trixie-slim \
+  bash -lc 'corepack enable && yarn install --mode=skip-build && chown -R '"$(id -u)":"$(id -g)"' /app'
+# 2. rebuild + run
+docker compose up -d --build backstage
+```
+
+#### "Send training email" button
+
+Each clicker row has a **Send training email** button. It calls the backend
+plugin `backstage/plugins/gophish-backend`
+(`POST /api/gophish/send-training-email`), which:
+
+1. mints a Frappe **magic login link** for that user, pointing at the course
+   `a-guide-to-frappe-learning` (configurable in `app-config.yaml` →
+   `gophish.training.course`), authenticating as the least-privilege service user;
+2. renders `email-templates/education-email.html`, replacing `{{TRAINING_LINK}}`
+   with the magic link (the template is mounted read-only, so you can edit it
+   without rebuilding Backstage);
+3. sends the email over SMTP to **Mailpit** — view it at http://localhost:8025.
+
+The magic link's host is rewritten to `gophish.training.lmsPublicUrl`
+(`http://localhost:8000`) so it resolves from the recipient's browser.
+
+**Prerequisites** (one-time):
+
+```bash
+# Provision the Frappe service user and copy its key/secret into .env
+docker compose run --rm frappe-create-service-user
+#   -> set FRAPPE_API_KEY / FRAPPE_API_SECRET in .env
+```
+
+Also make sure the target **user exists** in Frappe (magic links require a
+pre-existing, enabled user) and the **course `a-guide-to-frappe-learning`
+exists** in the LMS. The Frappe/SMTP credentials and template path live
+server-side (`gophish.training.*` in `app-config.yaml`); they never reach the
+browser.
+

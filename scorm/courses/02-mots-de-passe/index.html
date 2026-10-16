@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mots de passe et double authentification</title>
+  <link rel="stylesheet" href="shared/player.css">
+</head>
+<body data-mastery="80">
+  <header>
+    <div class="topbar"><span class="course"></span><span class="counter"></span></div>
+    <div class="progress"><div></div></div>
+  </header>
+
+  <main>
+    <!-- 1 ---------------------------------------------------------------- accueil -->
+    <section class="slide">
+      <div class="eyebrow">Module 2 · Sensibilisation à la cybersécurité</div>
+      <h1>Mots de passe et double authentification</h1>
+      <p class="lead">Vos identifiants sont les clés de l'entreprise. Un seul mot de passe faible ou réutilisé peut suffire à ouvrir la porte à un attaquant.</p>
+      <div class="meta"><span>⏱ Environ 15 minutes</span><span>🔐 1 testeur de mot de passe</span><span>🧩 1 exercice</span><span>✅ Quiz final : 80 % pour valider</span></div>
+      <h3>À la fin de ce module, vous saurez&nbsp;:</h3>
+      <ol class="objectives">
+        <li>Comprendre comment les attaquants obtiennent les mots de passe.</li>
+        <li>Créer un mot de passe robuste et facile à retenir grâce aux phrases de passe.</li>
+        <li>Utiliser un gestionnaire de mots de passe pour avoir un mot de passe unique par compte.</li>
+        <li>Activer et utiliser correctement la double authentification (MFA), sans tomber dans ses pièges.</li>
+      </ol>
+    </section>
+
+    <!-- 2 ---------------------------------------------------------------- menaces -->
+    <section class="slide">
+      <div class="eyebrow">Comprendre</div>
+      <h2>Comment vos mots de passe sont volés</h2>
+      <div class="grid">
+        <div class="card"><div class="icon">💧</div><h3>Les fuites de données</h3><p>Des milliards d'identifiants issus de sites piratés circulent librement. Si vous réutilisez un mot de passe, il est peut-être déjà dans une de ces listes.</p></div>
+        <div class="card"><div class="icon">🔁</div><h3>Le « credential stuffing »</h3><p>Les attaquants testent automatiquement les couples e-mail / mot de passe volés sur des centaines d'autres services : messagerie pro, banque, cloud…</p></div>
+        <div class="card"><div class="icon">🎣</div><h3>Le phishing</h3><p>Une fausse page de connexion vous fait saisir vous-même votre mot de passe. Voir le module 1.</p></div>
+        <div class="card"><div class="icon">📖</div><h3>Le dictionnaire</h3><p>Des logiciels essaient des milliards de combinaisons par seconde, en commençant par les mots courants, prénoms, dates et variantes (<code>Soleil2026!</code>).</p></div>
+        <div class="card"><div class="icon">🕵️</div><h3>La devinette</h3><p>Nom de l'enfant, du chien, club de foot, date de naissance… souvent visibles sur les réseaux sociaux.</p></div>
+        <div class="card"><div class="icon">📝</div><h3>Le post-it</h3><p>Sous le clavier, sur l'écran, dans un fichier « mdp.xlsx » ou envoyé par e-mail : un mot de passe écrit en clair n'est plus secret.</p></div>
+      </div>
+    </section>
+
+    <!-- 3 ---------------------------------------------------------------- robuste -->
+    <section class="slide">
+      <div class="eyebrow">Créer</div>
+      <h2>Un bon mot de passe&nbsp;: long, unique, imprévisible</h2>
+      <div class="steps">
+        <div class="step"><h3>📏 Long</h3><p>La longueur compte plus que la complexité. Visez <strong>au moins 12 caractères</strong> mêlant majuscules, minuscules, chiffres et caractères spéciaux — ou, mieux, une phrase de passe d'au moins 16 caractères.</p></div>
+        <div class="step"><h3>🔑 Unique</h3><p><strong>Un mot de passe différent pour chaque compte.</strong> Et jamais le même entre usage personnel et professionnel.</p></div>
+        <div class="step"><h3>🎲 Imprévisible</h3><p>Pas d'informations personnelles, de mots seuls du dictionnaire, ni de suites logiques (<code>azerty</code>, <code>123456</code>).</p></div>
+      </div>
+      <h3>La méthode de la phrase de passe</h3>
+      <p>Choisissez <strong>4 à 6 mots sans rapport entre eux</strong>, ajoutez des séparateurs et éventuellement un chiffre : facile à retenir, très long à deviner.</p>
+      <table class="compare">
+        <tr><th>Exemple</th><th>Évaluation</th></tr>
+        <tr><td class="mono">Julie1985</td><td>❌ Prénom + année : deviné en quelques secondes</td></tr>
+        <tr><td class="mono">P@ssw0rd!</td><td>❌ Complexe en apparence, mais c'est l'une des variantes les plus testées</td></tr>
+        <tr><td class="mono">Girafe-Parapluie-Moteur-Citron-27</td><td>✅ Long, imprévisible et mémorisable</td></tr>
+      </table>
+      <div class="callout warn"><p>N'utilisez pas les exemples de cette formation&nbsp;: ils sont désormais publics&nbsp;!</p></div>
+    </section>
+
+    <!-- 4 ---------------------------------------------------------------- testeur -->
+    <section class="slide">
+      <div class="eyebrow">Atelier</div>
+      <h2>Testez la robustesse d'un mot de passe</h2>
+      <div class="callout alert"><p><strong>N'entrez jamais un vrai mot de passe</strong>, ni ici ni sur un site de test en ligne. Inventez un exemple. Ce testeur fonctionne uniquement dans votre navigateur : rien n'est envoyé ni enregistré.</p></div>
+      <div class="meter-box" data-widget="password-meter">
+        <label for="pw-test"><strong>Mot de passe d'exemple</strong></label>
+        <input id="pw-test" type="text" autocomplete="off" spellcheck="false" placeholder="Essayez : soleil, puis Soleil2026!, puis une phrase de passe…">
+        <div class="meter"><div></div></div>
+        <div>Robustesse estimée : <span class="meter-label">—</span></div>
+        <ul class="meter-tips"></ul>
+      </div>
+      <p style="margin-top:16px">Essayez successivement <code>soleil</code>, <code>Soleil2026!</code> et <code>tortue-violon-banquise-orage</code>&nbsp;: observez comme la longueur fait la différence.</p>
+    </section>
+
+    <!-- 5 ---------------------------------------------------------------- gestionnaire -->
+    <section class="slide">
+      <div class="eyebrow">S'organiser</div>
+      <h2>Le gestionnaire de mots de passe</h2>
+      <p>Avoir un mot de passe long et unique pour chacun de vos dizaines de comptes est impossible à mémoriser. La solution&nbsp;: un <strong>gestionnaire de mots de passe</strong>, un coffre-fort chiffré qui les retient pour vous.</p>
+      <div class="grid">
+        <div class="card"><h3>✅ Ce qu'il fait</h3><ul class="clean"><li>Génère des mots de passe longs et aléatoires</li><li>Les remplit automatiquement</li><li>Ne les propose <strong>que sur le vrai site</strong> : une protection contre le phishing</li><li>Vous alerte des mots de passe réutilisés ou ayant fuité</li></ul></div>
+        <div class="card"><h3>🔐 Ce qu'il vous demande</h3><ul class="clean"><li>Un seul mot de passe maître, <strong>très robuste</strong> (phrase de passe) et jamais réutilisé</li><li>La double authentification activée sur le coffre</li><li>D'utiliser l'outil <strong>validé par votre entreprise</strong> pour les comptes professionnels</li></ul></div>
+      </div>
+      <div class="callout"><p><strong>Le saviez-vous&nbsp;?</strong> Si votre gestionnaire refuse de remplir automatiquement vos identifiants sur une page, c'est souvent parce que l'adresse ne correspond pas au vrai site&nbsp;: un excellent signal d'alerte.</p></div>
+      <div class="callout warn"><p>Évitez d'enregistrer vos mots de passe professionnels dans le navigateur d'un ordinateur partagé ou personnel, dans un fichier texte ou un tableur.</p></div>
+    </section>
+
+    <!-- 6 ---------------------------------------------------------------- MFA -->
+    <section class="slide">
+      <div class="eyebrow">Renforcer</div>
+      <h2>La double authentification (MFA)</h2>
+      <p>La MFA ajoute une seconde preuve d'identité au mot de passe. Même si celui-ci est volé, l'attaquant reste bloqué. Elle combine deux facteurs parmi&nbsp;:</p>
+      <div class="steps">
+        <div class="step"><h3>🧠 Ce que je sais</h3><p>Mot de passe, code PIN.</p></div>
+        <div class="step"><h3>📱 Ce que je possède</h3><p>Téléphone avec une application d'authentification, clé de sécurité physique.</p></div>
+        <div class="step"><h3>👆 Ce que je suis</h3><p>Empreinte digitale, reconnaissance faciale.</p></div>
+      </div>
+      <h3>Toutes les méthodes ne se valent pas</h3>
+      <table class="compare">
+        <tr><th>Méthode</th><th>Niveau de protection</th></tr>
+        <tr><td>Clé de sécurité physique (FIDO2) ou clé d'accès (passkey)</td><td>🟢🟢🟢 Excellent — résiste au phishing</td></tr>
+        <tr><td>Application d'authentification (code ou notification avec numéro à saisir)</td><td>🟢🟢 Très bon</td></tr>
+        <tr><td>Code reçu par SMS</td><td>🟡 Correct — toujours bien mieux que rien</td></tr>
+        <tr><td>Mot de passe seul</td><td>🔴 Insuffisant pour les comptes importants</td></tr>
+      </table>
+      <div class="callout ok"><p>Activez la MFA en priorité sur votre messagerie, vos accès à distance (VPN), vos outils cloud, votre gestionnaire de mots de passe… et vos comptes personnels (banque, e-mail, réseaux sociaux).</p></div>
+    </section>
+
+    <!-- 7 ---------------------------------------------------------------- pièges MFA -->
+    <section class="slide">
+      <div class="eyebrow">Vigilance</div>
+      <h2>Les pièges de la MFA</h2>
+      <div class="grid">
+        <div class="card"><div class="icon">🔔</div><h3>La fatigue MFA</h3><p>L'attaquant, qui a votre mot de passe, déclenche des dizaines de notifications d'approbation en espérant que vous finirez par accepter pour avoir la paix.</p></div>
+        <div class="card"><div class="icon">☎️</div><h3>La demande de code</h3><p>Un faux support vous appelle et vous demande « le code que vous venez de recevoir ». Ce code ouvre votre compte à l'attaquant.</p></div>
+        <div class="card"><div class="icon">🪞</div><h3>Le relais en temps réel</h3><p>Certaines fausses pages de connexion transmettent instantanément votre mot de passe <em>et</em> votre code MFA au vrai site. D'où l'intérêt des clés de sécurité.</p></div>
+      </div>
+      <div class="callout alert">
+        <p><strong>Règle d'or&nbsp;:</strong> une demande de validation que <strong>vous n'avez pas initiée</strong> doit toujours être <strong>refusée</strong>, puis signalée. Elle signifie que quelqu'un connaît probablement votre mot de passe : changez-le.</p>
+      </div>
+      <div class="callout"><p>Aucun service informatique légitime ne vous demandera jamais votre mot de passe ni un code MFA — ni par téléphone, ni par e-mail, ni par chat.</p></div>
+    </section>
+
+    <!-- 8 ---------------------------------------------------------------- exercice -->
+    <section class="slide" data-gate="scenarios">
+      <div class="eyebrow">Exercice</div>
+      <h2>Que faites-vous&nbsp;?</h2>
+      <p>Choisissez la meilleure réaction pour chaque situation.</p>
+
+      <div class="scenario">
+        <p class="situation">🔔 Il est 23 h, vous regardez un film. Votre téléphone affiche une demande d'approbation de connexion à votre compte professionnel. Puis une deuxième, une troisième…</p>
+        <div class="options">
+          <button class="btn" type="button" data-feedback="C'est exactement l'objectif d'une attaque par fatigue MFA : approuver donne l'accès à l'attaquant.">J'approuve pour que ça s'arrête, c'est sûrement un bug</button>
+          <button class="btn" type="button" data-correct data-feedback="Vous n'êtes pas à l'origine de la demande : quelqu'un a votre mot de passe. Refusez, changez-le et prévenez le support, même en dehors des heures de bureau.">Je refuse, je change mon mot de passe et je préviens le support / l'équipe sécurité</button>
+          <button class="btn" type="button" data-feedback="Ignorer ne suffit pas : l'attaquant connaît votre mot de passe et essaiera autrement. Il faut le changer et alerter.">J'ignore les notifications et j'en parlerai peut-être lundi</button>
+        </div>
+        <div class="feedback" aria-live="polite"></div>
+      </div>
+
+      <div class="scenario">
+        <p class="situation">🏖️ Un collègue vous écrit pendant vos congés : « Peux-tu me donner ton mot de passe ? J'ai besoin d'un fichier sur ton espace, c'est urgent. »</p>
+        <div class="options">
+          <button class="btn" type="button" data-feedback="Un mot de passe est strictement personnel : tout ce qui sera fait avec sera sous votre responsabilité. Et ce message pourrait venir d'un compte piraté.">Je lui donne, c'est un collègue de confiance</button>
+          <button class="btn" type="button" data-correct data-feedback="On ne partage jamais son mot de passe. Le partage de fichiers ou une délégation d'accès gérée par le support informatique répondent à ce besoin.">Je refuse et je lui propose de partager le fichier ou de passer par le support pour obtenir un accès</button>
+        </div>
+        <div class="feedback" aria-live="polite"></div>
+      </div>
+
+      <div class="scenario">
+        <p class="situation">🆕 Vous créez un compte sur un nouvel outil en ligne pour un projet. Quel mot de passe choisissez-vous&nbsp;?</p>
+        <div class="options">
+          <button class="btn" type="button" data-feedback="Si cet outil subit une fuite, votre mot de passe professionnel sera testé partout : c'est le credential stuffing.">Le même que ma messagerie professionnelle, pour ne pas l'oublier</button>
+          <button class="btn" type="button" data-feedback="Ajouter un chiffre à la fin est l'une des premières variantes testées par les attaquants.">Mon mot de passe habituel avec un « 2 » à la fin</button>
+          <button class="btn" type="button" data-correct data-feedback="Un mot de passe unique, généré et stocké par le gestionnaire. Vérifiez aussi que l'outil est autorisé par votre entreprise et activez la MFA s'il la propose.">Un mot de passe unique généré par le gestionnaire de mots de passe</button>
+        </div>
+        <div class="feedback" aria-live="polite"></div>
+      </div>
+
+      <div class="scenario">
+        <p class="situation">☎️ « Bonjour, c'est le support informatique. Nous migrons votre compte, pouvez-vous me lire le code à 6 chiffres que vous venez de recevoir&nbsp;? »</p>
+        <div class="options">
+          <button class="btn" type="button" data-correct data-feedback="Un code MFA ne se communique jamais. Raccrochez, rappelez le support via son numéro officiel et signalez l'appel.">Je refuse de donner le code, je raccroche et je rappelle le support via son numéro officiel</button>
+          <button class="btn" type="button" data-feedback="Le code reçu permet justement à l'attaquant de terminer sa connexion à votre compte.">Je donne le code : c'est le support, il connaît mon nom et mon service</button>
+        </div>
+        <div class="feedback" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- 9 ---------------------------------------------------------------- récap -->
+    <section class="slide">
+      <div class="eyebrow">Récapitulatif</div>
+      <h2>À faire, à ne pas faire</h2>
+      <table class="compare">
+        <tr><th>✅ À faire</th><th>❌ À ne pas faire</th></tr>
+        <tr><td>Utiliser des phrases de passe longues</td><td>Utiliser prénoms, dates, mots seuls ou suites de clavier</td></tr>
+        <tr><td>Un mot de passe unique par compte, stocké dans le gestionnaire</td><td>Réutiliser le même mot de passe, même avec une variante</td></tr>
+        <tr><td>Activer la MFA partout où c'est possible</td><td>Approuver une demande MFA que vous n'avez pas initiée</td></tr>
+        <tr><td>Changer immédiatement un mot de passe en cas de doute ou de fuite</td><td>Communiquer un mot de passe ou un code, même au « support »</td></tr>
+        <tr><td>Verrouiller votre session dès que vous vous absentez</td><td>Noter vos mots de passe sur un post-it, un fichier ou un e-mail</td></tr>
+      </table>
+      <div class="callout"><p>Inutile de changer un bon mot de passe tous les mois&nbsp;: changez-le surtout <strong>lorsqu'il a pu être exposé</strong> (phishing, fuite, partage, saisie sur un poste douteux).</p></div>
+    </section>
+
+    <!-- 10 --------------------------------------------------------------- quiz -->
+    <section class="slide" data-gate="quiz">
+      <div class="eyebrow">Quiz final · 8 questions</div>
+      <h2>Testez vos connaissances</h2>
+      <p>Il faut au moins <strong>80 %</strong> de bonnes réponses pour valider le module. Vous pouvez recommencer autant de fois que nécessaire.</p>
+
+      <fieldset class="q" id="pwd-q1" data-answer="c">
+        <legend>1. Lequel de ces mots de passe est le plus robuste&nbsp;?</legend>
+        <label class="choice"><input value="a"> <code>Marseille13!</code></label>
+        <label class="choice"><input value="b"> <code>P@ssw0rd2026</code></label>
+        <label class="choice"><input value="c"> <code>Crayon-Volcan-Hibou-Sardine-8</code></label>
+        <p class="explain">La phrase de passe est la plus longue et la moins prévisible. Les deux autres reposent sur des mots et variantes très connus des attaquants.</p>
+      </fieldset>
+
+      <fieldset class="q" id="pwd-q2" data-answer="b">
+        <legend>2. Pourquoi ne faut-il pas réutiliser un mot de passe sur plusieurs sites&nbsp;?</legend>
+        <label class="choice"><input value="a"> Parce que les sites l'interdisent</label>
+        <label class="choice"><input value="b"> Parce qu'en cas de fuite sur un site, les attaquants le testent automatiquement sur tous les autres</label>
+        <label class="choice"><input value="c"> Parce qu'il s'use à force d'être utilisé</label>
+        <p class="explain">C'est le « credential stuffing » : une seule fuite suffit à compromettre tous les comptes qui partagent le même mot de passe.</p>
+      </fieldset>
+
+      <fieldset class="q" id="pwd-q3" data-answer="a,c">
+        <legend>3. Quels sont les avantages d'un gestionnaire de mots de passe&nbsp;?</legend>
+        <label class="choice"><input value="a"> Il génère et retient des mots de passe uniques et robustes</label>
+        <label class="choice"><input value="b"> Il dispense d'activer la double authentification</label>
+        <label class="choice"><input value="c"> Il ne remplit les identifiants que sur le vrai site, ce qui aide à déjouer le phishing</label>
+        <label class="choice"><input value="d"> Il permet de partager son mot de passe maître avec ses collègues</label>
+        <p class="explain">Le gestionnaire génère, retient et protège contre les faux sites. La MFA reste indispensable, et le mot de passe maître ne se partage jamais.</p>
+      </fieldset>
+
+      <fieldset class="q" id="pwd-q4" data-answer="c">
+        <legend>4. Vous recevez une notification MFA alors que vous n'essayez pas de vous connecter. Que signifie-t-elle le plus probablement&nbsp;?</legend>
+        <label class="choice"><input value="a"> Une simple mise à jour de l'application</label>
+        <label class="choice"><input value="b"> Que votre téléphone est en panne</label>
+        <label class="choice"><input value="c"> Que quelqu'un connaît votre mot de passe et tente de se connecter</label>
+        <p class="explain">La notification arrive après la saisie du bon mot de passe. Refusez, changez votre mot de passe et prévenez l'équipe sécurité.</p>
+      </fieldset>
+
+      <fieldset class="q" id="pwd-q5" data-answer="a">
+        <legend>5. Quelle méthode de double authentification offre la meilleure protection contre le phishing&nbsp;?</legend>
+        <label class="choice"><input value="a"> Une clé de sécurité physique (FIDO2) ou une clé d'accès (passkey)</label>
+        <label class="choice"><input value="b"> Un code reçu par SMS</label>
+        <label class="choice"><input value="c"> Une question secrète (« nom de votre premier animal »)</label>
+        <p class="explain">Les clés FIDO2 / passkeys vérifient l'adresse du site : elles ne fonctionnent pas sur une fausse page. Une question secrète n'est pas un second facteur.</p>
+      </fieldset>
+
+      <fieldset class="q" id="pwd-q6" data-answer="b">
+        <legend>6. Le support informatique vous appelle et vous demande votre mot de passe pour « vérifier votre compte ». Que faites-vous&nbsp;?</legend>
+        <label class="choice"><input value="a"> Je le donne, puisque c'est le support</label>
+        <label class="choice"><input value="b"> Je refuse : aucun service légitime ne demande un mot de passe. Je raccroche et je signale l'appel</label>
+        <label class="choice"><input value="c"> Je l'envoie plutôt par e-mail, c'est plus sûr</label>
+        <p class="explain">Un mot de passe n'est connu que de vous. Le support dispose d'outils pour intervenir sans jamais le demander.</p>
+      </fieldset>
+
+      <fieldset class="q" id="pwd-q7" data-answer="a,b">
+        <legend>7. Dans quels cas devez-vous changer votre mot de passe sans attendre&nbsp;?</legend>
+        <label class="choice"><input value="a"> Vous l'avez saisi sur une page qui s'est révélée frauduleuse</label>
+        <label class="choice"><input value="b"> Le service concerné annonce une fuite de données</label>
+        <label class="choice"><input value="c"> Vous venez de le créer, avec le gestionnaire, il y a une semaine et rien ne s'est passé</label>
+        <p class="explain">On change un mot de passe dès qu'il a pu être exposé. Un mot de passe robuste et unique, jamais exposé, n'a pas besoin d'être changé sans raison.</p>
+      </fieldset>
+
+      <fieldset class="q" id="pwd-q8" data-answer="b">
+        <legend>8. Quel est le meilleur moyen de retenir un mot de passe robuste pour votre gestionnaire (mot de passe maître)&nbsp;?</legend>
+        <label class="choice"><input value="a"> L'écrire sur un post-it collé sous le clavier</label>
+        <label class="choice"><input value="b"> Utiliser une phrase de passe de plusieurs mots aléatoires, facile à mémoriser</label>
+        <label class="choice"><input value="c"> Utiliser le même que pour la messagerie</label>
+        <p class="explain">Une phrase de passe se mémorise facilement tout en restant très difficile à deviner. Le mot de passe maître doit être unique.</p>
+      </fieldset>
+
+      <p><button class="btn primary" type="button" id="quiz-submit">Valider mes réponses</button></p>
+    </section>
+
+    <!-- 11 --------------------------------------------------------------- résultats -->
+    <section class="slide" data-results>
+      <div class="result"></div>
+      <div class="callout"><p><strong>Mémo&nbsp;:</strong> phrase de passe longue · un mot de passe unique par compte, dans le gestionnaire · MFA activée · jamais de code ni de mot de passe communiqué.</p></div>
+    </section>
+  </main>
+
+  <nav class="navbar">
+    <button class="btn" type="button" id="prev">← Précédent</button>
+    <span class="hint" aria-live="polite"></span>
+    <button class="btn primary" type="button" id="next">Suivant →</button>
+  </nav>
+
+  <script src="shared/player.js"></script>
+</body>
+</html>

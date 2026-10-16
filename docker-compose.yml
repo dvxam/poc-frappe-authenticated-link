@@ -292,10 +292,19 @@ services:
       # Host-facing port, used by app-config.production.yaml for the public baseUrl.
       # The container always listens on 7007 internally.
       BACKSTAGE_PORT: ${BACKSTAGE_PORT:-7007}
+      # Injected server-side by the proxy into GoPhish API calls (never sent to
+      # the browser). Generate it in GoPhish -> Settings -> API key, put it in .env.
+      GOPHISH_API_KEY: ${GOPHISH_API_KEY:-}
+      # Frappe service-user credentials used by the training-email backend to
+      # mint magic links. From `docker compose run --rm frappe-create-service-user`.
+      FRAPPE_API_KEY: ${FRAPPE_API_KEY:-}
+      FRAPPE_API_SECRET: ${FRAPPE_API_SECRET:-}
     ports:
       - "${BACKSTAGE_PORT:-7007}:7007"
     volumes:
       - backstage-data:/data        # persistent SQLite (one file per plugin)
+      # Email template read at send-time (edit it without rebuilding Backstage).
+      - ./email-templates:/email-templates:ro
     networks:
       - vidi
 
