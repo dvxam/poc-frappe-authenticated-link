@@ -105,6 +105,29 @@ def _consume_and_login(token):
     doc.db_set("last_used_on", now_datetime(), update_modified=False)
     frappe.db.commit()
 
-    dest = doc.redirect_to or (f"/lms/courses/{doc.course}" if doc.course else "/lms")
+    dest = doc.redirect_to or _course_destination(doc.course)
     frappe.local.response["type"] = "redirect"
     frappe.local.response["location"] = dest
+
+
+def _course_destination(course):
+    """Where a course-based link should land.
+
+    Prefer the course's FIRST lesson (`/lms/courses/<course>/learn/1-1`) so the
+    user starts the course directly instead of landing on the overview page and
+    having to click "Continue Learning". Falls back to the course overview, then
+    to the LMS home, if the outline can't be resolved.
+    """
+    if not course:
+        return "/lms"
+    try:
+        from lms.lms.utils import get_lessons, get_lesson_url
+
+        lessons = get_lessons(course)
+        if lessons:
+            url = get_lesson_url(course, lessons[0].number)
+            if url:
+                return url
+    except Exception:
+        pass
+    return f"/lms/courses/{course}"

@@ -1,4 +1,4 @@
-# VIDI SI Platform
+# VIDI SI Platform - Frappe POC
 
 Docker stack for a security-awareness platform:
 
@@ -38,10 +38,15 @@ Access:
 ## Magic login links (`vidi_integration` app)
 
 Custom Frappe app (`./frappe-apps/vidi_integration`) that generates auto-login
-links to an LMS course: click → the user is authenticated → redirected to the
-course. Token is **hashed** (SHA-256) in the database, with a **TTL** (7 days by
-default), **reusable** until expiry, and revocable.An external system
-calls the API and sends the email itself.
+links to an LMS course: click → the user is authenticated → redirected **straight
+to the course's first lesson** (`/lms/courses/<course>/learn/1-1`), so there's no
+"Continue Learning" click. Token is **hashed** (SHA-256) in the database, with a
+**TTL** (7 days by default), **reusable** until expiry, and revocable. An external
+system calls the API and sends the email itself.
+
+> The landing target is resolved dynamically from the course outline. Pass an
+> explicit `redirect_to` when minting to override it (e.g. the course overview
+> `/lms/courses/<course>`).
 
 **Build + install (once)** — overlay on top of `vidi-lms:latest`:
 
